@@ -1,0 +1,54 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.6
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Build Docker image
+        run: docker build -t flask_app .
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: eu-north-1
+
+      - name: Log in to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Push Docker image to ECR
+        run: |
+          docker tag flask_app:latest ${{ steps.login-ecr.outputs.registry }}/${{ github.repository }}:latest
+          docker push ${{ steps.login-ecr.outputs.registry }}/${{ github.repository }}:latest
+
+      - name: Deploy to AWS Fargate
+        run: |
+          # Use AWS CLI or SDK to update your ECS task definition and service with the new image
+          # E.g., aws ecs register-task-definition, aws ecs update-service
+           timestamp=$(date +%Y%m%d%H%M%S)
+           basic-flask-app-task="basic-flask-app-task-${timestamp}"
+           aws ecs register-task-definition --family "${basic-flask-app-task}" --container-definitions '[{"name": "flask_app_container", "image": "${{ steps.login-ecr.outputs.registry }}/${{ github.repository }}:latest"}]'
+
+           
+           
+           
+           
