@@ -54,7 +54,7 @@ jobs:
           # E.g., aws ecs register-task-definition, aws ecs update-service
            timestamp=$(date +%Y%m%d%H%M%S)
            basic_flask_app_task="basic-flask-app-task-${timestamp}"
-           aws ecs register-task-definition --family "${basic_flask_app_task}" --container-definitions '[{"name": "flask_app_container", "image": "163693469465.dkr.ecr.eu-north-1.amazonaws.com/flask-app:latest"}]'
+           aws ecs register-task-definition --family "${basic_flask_app_task}" --container-definitions '[{"name": "flask_app_container", "image": "163693469465.dkr.ecr.eu-north-1.amazonaws.com/flask-app:latest", "memory": 512}]'
 
 
            
