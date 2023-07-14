@@ -35,11 +35,8 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: eu-north-1
+          aws-region: us-east-1
           audience: sts.amazonaws.com
-        env:
-          pythonLocation: /opt/hostedtoolcache/Python/3.7.17/x64
-          LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.7.17/x64/lib
 
       - name: Log in to Amazon ECR
         id: login-ecr
