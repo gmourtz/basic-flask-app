@@ -44,7 +44,8 @@ jobs:
       - name: Push Docker image to ECR
         run: |
           docker tag my-image:latest 163693469465.dkr.ecr.eu-north-1.amazonaws.com/flask-app:latest
-          docker push ${{ steps.login-ecr.outputs.registry }}/${{ github.repository }}:latest
+          docker push 163693469465.dkr.ecr.eu-north-1.amazonaws.com/flask-app:latest
+
 
       - name: Deploy to AWS Fargate
         run: |
