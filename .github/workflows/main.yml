@@ -24,8 +24,10 @@ jobs:
       - name: Clear pip cache
         run: pip cache purge
         
-      - name: Upgrade setuptools
-        run: pip install --upgrade setuptools
+      - name: Upgrade setuptools and wheel
+        run: |
+          pip install --upgrade setuptools
+          pip install --upgrade wheel
 
       - name: Install dependencies
         run: pip install -r requirements.txt
