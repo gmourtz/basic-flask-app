@@ -53,8 +53,9 @@ jobs:
           # Use AWS CLI or SDK to update your ECS task definition and service with the new image
           # E.g., aws ecs register-task-definition, aws ecs update-service
            timestamp=$(date +%Y%m%d%H%M%S)
-           basic-flask-app-task="basic-flask-app-task-${timestamp}"
-           aws ecs register-task-definition --family "${basic-flask-app-task}" --container-definitions '[{"name": "flask_app_container", "image": "${{ steps.login-ecr.outputs.registry }}/${{ github.repository }}:latest"}]'
+           basic_flask_app_task="basic-flask-app-task-${timestamp}"
+           aws ecs register-task-definition --family "${basic_flask_app_task}" --container-definitions '[{"name": "flask_app_container", "image": "***.dkr.ecr.eu-north-1.amazonaws.com/gmourtz/basic-flask-app:latest"}]'
+
 
            
            
