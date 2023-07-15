@@ -1,0 +1,51 @@
+        
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.7
+          
+      - name: Upgrade pip
+        run: pip install --upgrade pip
+        
+      - name: Clear pip cache
+        run: pip cache purge
+        
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Zip application
+        run: zip -r myapp.zip .
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: AKIASMHHED4M6YLZWH5C
+          aws-secret-access-key: 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
+          aws-region: eu-north-1
+
+      - name: Upload artifact to S3
+        run: aws s3 cp myapp.zip s3://flask-app-test0123/myapp.zip
+        
+
+      - name: Create application version on Elastic Beanstalk
+        run: |
+          aws elasticbeanstalk create-application-version \
+            --application-name my-application \
+            --version-label v1 \
+            --source-bundle S3Bucket="flask-app-test0123",S3Key="myapp.zip"
+
