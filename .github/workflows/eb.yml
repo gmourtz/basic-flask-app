@@ -45,7 +45,7 @@ jobs:
       - name: Create application version on Elastic Beanstalk
         run: |
           aws elasticbeanstalk create-application-version \
-            --application-name my-application \
+            --application-name my-application2 \
             --version-label v1 \
             --source-bundle S3Bucket="flask-app-test0123",S3Key="myapp.zip"
 
